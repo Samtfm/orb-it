@@ -10,12 +10,18 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.16.2",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "foreman": "^2.0.0",
+    "mongoose": "^4.11.1",
+    "nodemon": "^1.11.0",
     "ovrui": "~1.2.0",
     "react": "~15.4.1",
     "react-native": "~0.42.0",
-    "three": "^0.80.1",
     "react-vr": "~1.2.0",
-    "react-vr-web": "~1.2.0"
+    "react-vr-web": "~1.2.0",
+    "three": "^0.80.1"
   },
   "devDependencies": {
     "babel-jest": "^19.0.0",
