@@ -33,6 +33,10 @@ router.get('/', function(req, res) {
   res.json({ message: 'API Initialized' });
 });
 
+router.get('/hello', function(req, res) {
+  res.json({ message: 'This coming from the server' });
+});
+
 
 app.listen(port, function() {
   console.log(`api running on port ${port}`)
