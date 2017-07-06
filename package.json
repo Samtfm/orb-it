@@ -17,6 +17,7 @@
     "express": "^4.15.3",
     "foreman": "^2.0.0",
     "global": "^4.3.2",
+    "mongodb": "^2.2.29",
     "mongoose": "^4.11.1",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
