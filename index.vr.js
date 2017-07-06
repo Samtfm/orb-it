@@ -24,7 +24,7 @@ export default class OrbIt extends React.Component {
             textAlignVertical: 'center',
             transform: [{translate: [0, 0, -3]}],
           }}>
-          hello
+          SYRUP
         </Text>
       </View>
     );

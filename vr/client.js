@@ -19,4 +19,3 @@ function init(bundle, parent, options) {
 }
 
 window.ReactVR = {init};
-console.log(init);
