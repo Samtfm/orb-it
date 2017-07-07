@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
-const router = express.Router();
+const users = require('./routes/users');
+const posts = require('./routes/posts');
+const follows = require('./routes/follows');
+const feed = require('./routes/feed');
+
 
 const port = process.env.API_PORT || 3001;
 
@@ -27,15 +31,10 @@ app.get('/', function(req, res) {
 app.use("/vr/build", express.static(__dirname + '/vr/build'));
 app.use("/static_assets", express.static(__dirname + '/static_assets'));
 
-app.use('/api', router);
-
-router.get('/', function(req, res) {
-  res.json({ message: 'API Initialized' });
-});
-
-router.get('/hello', function(req, res) {
-  res.json({ message: 'This coming from the server' });
-});
+app.use('/api/users', users);
+app.use('/api/posts', posts);
+app.use('/api/follows', follows);
+app.use('/api/feed', feed);
 
 
 app.listen(port, function() {
