@@ -9,11 +9,15 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: (models) => {
         // associations can be defined here
-        // sample code 
+        // sample code
         // TodoItem.belongsTo(models.Todo, {
         //   foreignKey: 'todoId',
         //   onDelete: 'CASCADE',
         // });
+        // Orb.belongsTo(models.User, {
+        //    foreignKey: 'orbId',
+        //    onDelete: 'CASCADE'
+        // })
       }
     }
   });

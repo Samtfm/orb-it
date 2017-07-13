@@ -1,12 +1,11 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
-const users = require('./routes/users');
-const posts = require('./routes/posts');
-const follows = require('./routes/follows');
-const feed = require('./routes/feed');
+const users = require('./server/routes/users');
+const posts = require('./server/routes/posts');
+const follows = require('./server/routes/follows');
+const feed = require('./server/routes/feed');
 
 
 const port = process.env.API_PORT || 3001;
@@ -38,5 +37,5 @@ app.use('/api/feed', feed);
 
 
 app.listen(port, function() {
-  console.log(`api running on port ${port}`)
-})
+  console.log(`api running on port ${port}`);
+});
