@@ -33,7 +33,7 @@ export default class OrbIt extends React.Component {
     return (
       <View>
         <Pano source={asset('chess-world.jpg')}/>
-        <UploadImage />
+        <UploadImage/>
         <Text
           style={{
             backgroundColor: this.state.bg,
