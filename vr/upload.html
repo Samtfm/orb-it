@@ -6,8 +6,37 @@
     <h1>Took a rad photosphere and you're ready to Orb It?</h1>
     <form class="" action="index.html" method="post">
       <input type="text" name="title" value="">
-      <input type="file" />
+      <input id="fileInput" type="file" />
       <input type="submit" name="Upload Orb" value="">
     </form>
+    <canvas id="thumbnail" width="256" height="128"></canvas>
+    <canvas id="resized" width="4096" height="2048"></canvas>
+
   </body>
+  <script type="text/javascript">
+    const thumbnailCanvas = document.querySelector("#thumbnail");
+    const resizedCanvas = document.querySelector("#resized");
+    const fileInput = document.querySelector("#fileInput");
+
+    fileInput.addEventListener("change", processFile)
+
+    function processFile(e){
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          resizeImage(img);
+        };
+        img.src = event.target.result;
+      }
+      reader.readAsDataURL(e.target.files[0])
+    }
+
+    function resizeImage(img){
+      let ctx = resizedCanvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, resizedCanvas.width, resizedCanvas.height)
+      ctx = thumbnailCanvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, thumbnailCanvas.width, thumbnailCanvas.height)
+    }
+  </script>
 </html>
