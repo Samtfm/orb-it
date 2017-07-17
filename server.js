@@ -28,7 +28,9 @@ app.use(function(req, res, next) {
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/vr/production-index.html');
 });
-
+app.get('/upload', function(req, res) {
+  res.sendFile(__dirname + '/vr/upload.html');
+});
 // for static assets
 app.use("/vr/build", express.static(__dirname + '/vr/build'));
 app.use("/static_assets", express.static(__dirname + '/static_assets'));
