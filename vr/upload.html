@@ -17,6 +17,10 @@
     const thumbnailCanvas = document.querySelector("#thumbnail");
     const resizedCanvas = document.querySelector("#resized");
     const fileInput = document.querySelector("#fileInput");
+    let fullImage = null;
+    let thumbImage = null;
+    const formData = {};
+
 
     fileInput.addEventListener("change", processFile)
 
@@ -26,7 +30,15 @@
         const img = new Image();
         img.onload = function() {
           resizeImage(img);
-        };
+          resizedCanvas.toBlob(blob => {
+            formData.fullImage = blob
+            thumbnailCanvas.toBlob(blob => {
+              formData.thumbImage = blob
+              console.log(formData);
+              console.log("READY");
+            });
+          });
+        }
         img.src = event.target.result;
       }
       reader.readAsDataURL(e.target.files[0])
