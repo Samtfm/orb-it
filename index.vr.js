@@ -9,6 +9,8 @@ import {
   VrButton,
 } from 'react-vr';
 
+import UploadImage from './frontend/components/upload_image';
+
 export default class OrbIt extends React.Component {
   constructor(props) {
     super(props)
@@ -31,6 +33,7 @@ export default class OrbIt extends React.Component {
     return (
       <View>
         <Pano source={asset('chess-world.jpg')}/>
+        <UploadImage/>
         <Text
           style={{
             backgroundColor: this.state.bg,
