@@ -5,10 +5,10 @@
   <body>
     <h1>Took a rad photosphere and you're ready to Orb It?</h1>
     <form class="" action="index.html" method="post">
-      <input type="text" name="title" value="">
+      <input id='titleInput' type="text" name="title" value="">
       <input id="fileInput" type="file" />
-      <input type="submit" name="Upload Orb" value="">
     </form>
+    <button id='submitButton' name="Upload Orb">Orb It!</button>
     <canvas id="thumbnail" width="256" height="128"></canvas>
     <canvas id="resized" width="4096" height="2048"></canvas>
 
@@ -17,6 +17,9 @@
     const thumbnailCanvas = document.querySelector("#thumbnail");
     const resizedCanvas = document.querySelector("#resized");
     const fileInput = document.querySelector("#fileInput");
+    const titleInput = document.querySelector("#titleInput");
+    const submitButton = document.querySelector('#submitButton')
+    submitButton.addEventListener("click", submit);
     let fullImage = null;
     let thumbImage = null;
     const formData = {};
@@ -49,5 +52,26 @@
       ctx = thumbnailCanvas.getContext('2d');
       ctx.drawImage(img, 0, 0, thumbnailCanvas.width, thumbnailCanvas.height)
     }
+
+    function submit(){
+      fetchCredsForNewOrb()
+      .then(res => res.json())
+      .then(data => console.log(data))
+    }
+
+    function fetchCredsForNewOrb(){
+      const body = {
+        orb: {
+          title: titleInput.value,
+          content: {},
+        }
+      }
+      return fetch("/api/orbs", {
+        headers: { "Content-Type" : "application/json" },
+        method: "POST",
+        body: JSON.stringify(body)
+      });
+    }
+
   </script>
 </html>

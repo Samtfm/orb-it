@@ -4,6 +4,7 @@ const s3Config = require('../config/s3')
 
 module.exports = {
   create(req, res) {
+    console.log(req.body  );
     return Orb
       .create({
         title: req.body.orb.title,
