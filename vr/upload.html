@@ -21,7 +21,6 @@
     let thumbImage = null;
     const formData = {};
 
-
     fileInput.addEventListener("change", processFile)
 
     function processFile(e){
@@ -31,9 +30,9 @@
         img.onload = function() {
           resizeImage(img);
           resizedCanvas.toBlob(blob => {
-            formData.fullImage = blob
+            formData.fullImage = new File([blob], 'full_image.png')
             thumbnailCanvas.toBlob(blob => {
-              formData.thumbImage = blob
+              formData.thumbImage = new File([blob], 'thumbnail.png')
               console.log(formData);
               console.log("READY");
             });
@@ -50,5 +49,7 @@
       ctx = thumbnailCanvas.getContext('2d');
       ctx.drawImage(img, 0, 0, thumbnailCanvas.width, thumbnailCanvas.height)
     }
+
+    
   </script>
 </html>
