@@ -8,7 +8,7 @@ var crypto = require('crypto');
 
 function s3Credentials(config, filename) {
   return {
-    endpoint_url: "https://" + config.bucket + ".s3.amazonaws.com",
+    endpointURL: "https://" + config.bucket + ".s3.amazonaws.com",
     params: s3Params(config, filename)
   }
 }
