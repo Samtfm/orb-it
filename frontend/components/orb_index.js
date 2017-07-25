@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { AppRegistry, asset, Pano, Text, View } from 'react-vr';
+import { AppRegistry, asset, Pano, Text, View, Sphere } from 'react-vr';
 
 const indexStyle = {
-  display: 'flex',
+  position: 'absolute',
+  transform: [{translate: [-2.5, 0, -5]}],
   flexDirection: 'row',
-}
+  justifyContent: 'space-between',
+  width: 5,
+  // alignItems: 'stretch',
+};
 
 class OrbIndex extends Component {
   render() {
@@ -29,3 +33,5 @@ class OrbIndex extends Component {
     )
   }
 }
+
+export default OrbIndex;

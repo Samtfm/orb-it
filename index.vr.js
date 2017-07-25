@@ -9,6 +9,8 @@ import {
   VrButton,
 } from 'react-vr';
 
+import OrbIndex from './frontend/components/orb_index.js';
+
 export default class OrbIt extends React.Component {
   constructor(props) {
     super(props)
@@ -31,6 +33,7 @@ export default class OrbIt extends React.Component {
     return (
       <View>
         <Pano source={asset('chess-world.jpg')}/>
+        <OrbIndex/>
         <Text
           style={{
             backgroundColor: this.state.bg,
@@ -43,15 +46,15 @@ export default class OrbIt extends React.Component {
             textAlignVertical: 'center',
             transform: [{translate: [0, 0, -3]}],
           }}
-          onEnter={() => this.setState({bg: 'blue'})}
-          onExit={() => this.setState({bg: 'red'})}>
+          onEnter={() => this.setState({bg: 'rgba(0,0,255,0.5)'})}
+          onExit={() => this.setState({bg: 'rgba(0,255,0,0.5)'})}>
           {this.state.message}
         </Text>
         <VrButton
           onClick={() => this.changeMessage()}>
           <Text
             style={{
-              backgroundColor: 'grey',
+              backgroundColor: 'rgba(0,0,0,.2)',
               fontSize: 0.8,
               fontWeight: '400',
               layoutOrigin: [0.5, 0.5],
