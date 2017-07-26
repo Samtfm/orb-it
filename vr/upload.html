@@ -27,7 +27,7 @@
 
     header {
       width: 75%;
-      margin: auto;
+      margin: '0 auto';
     }
 
     section {
@@ -111,6 +111,7 @@
     const fileInput = document.querySelector("#fileInput");
     const titleInput = document.querySelector("#titleInput");
     const submitButton = document.querySelector('#submitButton')
+    submitButton.addEventListener("click", submit);
     const formData = {};
 
     fileInput.addEventListener("change", processFile)
@@ -142,58 +143,56 @@
       buildScene(thumbnailCanvas.toDataURL());
     };
     //
-    // function submit(){
-    //   let thumbURL, fullURL;
-    //   fetchCredsForNewOrb()
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     console.log(data);
-    //     postImageToS3(formData.thumbImage, data.thumbCredentials)
-    //     .then(res => {
-    //       console.log(res)
-    //     })
-    //     .catch(err => console.log(err))
-    //   })
-    // }
-    //
-    // function postImageToS3(image, credentials){
-    //   params = credentials.params
-    //   params.processData = false;
-    //   params.contentType = 'binary/octet-stream'
-    //   params.file = image;
-    //   console.log(params);
-    //
-    //   return fetch(credentials.endpointURL, {
-    //     method: "POST",
-    //     dataType: "json",
-    //     headers: {
-    //     'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-    //     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-    //     },
-    //     body: jsonToQueryString(params)//JSON.stringify(params)
-    //   });
-    //
-    // }
-    // function jsonToQueryString(json) {
-    //   return Object.keys(json).map(function(key) {
-    //     return encodeURIComponent(key) + '=' +
-    //       encodeURIComponent(json[key]);
-    //   }).join('&');
-    // }
-    //
-    // function fetchCredsForNewOrb(){
-    //   const body = {
-    //     orb: {
-    //       title: titleInput.value,
-    //       content: {},
-    //     }
-    //   }
-    //   return fetch("/api/orbs", {
-    //     headers: { "Content-Type" : "application/json" },
-    //     method: "POST",
-    //     body: JSON.stringify(body)
-    //   });
-    // }
+    function submit(){
+      let thumbURL, fullURL;
+      fetchCredsForNewOrb()
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        postImageToS3(formData.thumbImage, data.thumbCredentials)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => console.log(err))
+      })
+    }
+
+    function postImageToS3(image, credentials){
+      params = credentials.params
+      params.processData = false;
+      params.contentType = 'binary/octet-stream'
+      params.file = image;
+      return fetch(credentials.endpointURL, {
+        method: "POST",
+        dataType: "json",
+        headers: {
+        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        },
+        body: jsonToQueryString(params)//JSON.stringify(params)
+      });
+
+    }
+    function jsonToQueryString(json) {
+      return Object.keys(json).map(function(key) {
+        return encodeURIComponent(key) + '=' +
+          encodeURIComponent(json[key]);
+      }).join('&');
+    }
+
+    function fetchCredsForNewOrb(){
+      const body = {
+        orb: {
+          title: titleInput.value,
+          content: {},
+        }
+      }
+      return fetch("/api/orbs", {
+        headers: { "Content-Type" : "application/json" },
+        method: "POST",
+        body: JSON.stringify(body)
+      });
+    }
 
   </script>
 </html>
