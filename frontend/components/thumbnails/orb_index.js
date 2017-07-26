@@ -11,15 +11,19 @@ const indexStyle = {
 };
 
 
-
 class OrbThumb extends Component {
   constructor(props){
     super(props);
     this.state = {
       distance: props.distance,
-      rotationY: props.rotationY
+      rotationY: props.rotationY,
+      spin: 0,
     };
+    setInterval(()=>{
+      this.setState({spin: this.state.spin+.2})
+    },50)
   }
+
   componentWillReceiveProps(nextProps){
     this.setState({
       distance: nextProps.distance,
@@ -31,7 +35,9 @@ class OrbThumb extends Component {
       position: 'absolute',
       transform: [
         {rotateY: this.state.rotationY + 90 },
-        {translate: [this.state.distance, 0, 0]}],
+        {translate: [this.state.distance, 0, 0]},
+        {rotateY: this.state.spin }
+      ],
     };
     return (
       <View style={style}>
@@ -39,6 +45,7 @@ class OrbThumb extends Component {
           radius={1}
           widthSegments={20}
           heightSegments={12}
+          texture={"/static_assets/backyard.jpg"}
         />
       </View>
     );
