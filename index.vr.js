@@ -17,7 +17,6 @@ export default class OrbIt extends React.Component {
     return (
       <View>
         <OrbIndex/>
-        <Navigation/>
 
       </View>
     );
