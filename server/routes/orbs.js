@@ -8,6 +8,7 @@ router.route('/')
 
 router.route('/:orbId')
   .get(orbsController.show)
+  .patch(orbsController.update)
   .delete(orbsController.destroy);
 
 module.exports = router;
