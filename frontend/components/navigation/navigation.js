@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
-import { AppRegistry, asset, Pano, Text, View, Sphere, VrButton} from 'react-vr';
+import { asset, Text, View, VrButton, VrHeadModel, StyleSheet} from 'react-vr';
 
-export default class OrbIt extends React.Component {
+const styles = StyleSheet.create({
+  text: {
+    position: 'relative',
+    fontSize: 0.8,
+    fontWeight: '400',
+    layoutOrigin: [0.5, 0.5],
+    paddingLeft: 0.2,
+    paddingRight: 0.2,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  }
+});
+
+export default class Navigation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       message: 'syrup',
-      bg: 'red'
+      bg: 'red',
+      fov: 45,
+      rotation: 0,
     };
     this.changeMessage = this.changeMessage.bind(this);
   }
@@ -19,20 +34,15 @@ export default class OrbIt extends React.Component {
     //   });
   }
   render() {
+    const tethered = {
+      transform: [
+        {rotateY: VrHeadModel.yawPitchRoll()[1]},
+        {translate: [0, 0, -4]}],
+    };
     return (
       <View>
         <Text
-          style={{
-            backgroundColor: this.state.bg,
-            fontSize: 0.8,
-            fontWeight: '400',
-            layoutOrigin: [0.5, 0.5],
-            paddingLeft: 0.2,
-            paddingRight: 0.2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            transform: [{translate: [0, 0, -3]}],
-          }}
+          style={[tethered, styles.text, {backgroundColor: this.state.bg}]}
           onEnter={() => this.setState({bg: 'rgba(0,0,255,0.5)'})}
           onExit={() => this.setState({bg: 'rgba(0,255,0,0.5)'})}>
           {this.state.message}
@@ -40,21 +50,11 @@ export default class OrbIt extends React.Component {
         <VrButton
           onClick={() => this.changeMessage()}>
           <Text
-            style={{
-              backgroundColor: 'rgba(0,0,0,.2)',
-              fontSize: 0.8,
-              fontWeight: '400',
-              layoutOrigin: [0.5, 0.5],
-              paddingLeft: 0.2,
-              paddingRight: 0.2,
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              transform: [{translate: [0, 0, -3]}],
-            }}>
+            style={[tethered, styles.text, {backgroundColor: 'rgba(80,10,10,.3)'}]}>
             Change Message
           </Text>
         </VrButton>
       </View>
-    )
+    );
   }
 }

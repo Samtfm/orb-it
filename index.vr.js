@@ -18,6 +18,7 @@ export default class OrbIt extends React.Component {
       <View>
         <OrbIndex/>
         <Navigation/>
+
       </View>
     );
   }
