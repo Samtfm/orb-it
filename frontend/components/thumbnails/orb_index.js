@@ -30,7 +30,7 @@ class OrbThumb extends Component {
     const style = {
       position: 'absolute',
       transform: [
-        {rotateY: this.state.rotationY+90},
+        {rotateY: this.state.rotationY + 90 },
         {translate: [this.state.distance, 0, 0]}],
     };
     return (
@@ -44,15 +44,17 @@ class OrbThumb extends Component {
     );
   }
 }
+
 class OrbIndex extends Component {
   render() {
     return (
       <View style={indexStyle}>
-      <OrbThumb distance='4.5' rotationY={-30}/>
-      <OrbThumb distance='4.5' rotationY={0}/>
-      <OrbThumb distance='4.5' rotationY={30}/>
-      <OrbThumb distance='4.5' rotationY={60}/>
-      <OrbThumb distance='4.5' rotationY={90}/>
+        <Pano source={asset('chess-world.jpg')}/>
+        <OrbThumb distance='4.5' rotationY={-30}/>
+        <OrbThumb distance='4.5' rotationY={0}/>
+        <OrbThumb distance='4.5' rotationY={30}/>
+        <OrbThumb distance='4.5' rotationY={60}/>
+        <OrbThumb distance='4.5' rotationY={90}/>
         <Sphere
           radius={0.5}
           widthSegments={20}
