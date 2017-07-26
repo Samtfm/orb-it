@@ -48,9 +48,11 @@ class OrbIndex extends Component {
   render() {
     return (
       <View style={indexStyle}>
-        <OrbThumb distance='5' rotationY={0}/>
-          <OrbThumb distance='5' rotationY={50}/>
-            <OrbThumb distance='5' rotationY={80}/>
+      <OrbThumb distance='4.5' rotationY={-30}/>
+      <OrbThumb distance='4.5' rotationY={0}/>
+      <OrbThumb distance='4.5' rotationY={30}/>
+      <OrbThumb distance='4.5' rotationY={60}/>
+      <OrbThumb distance='4.5' rotationY={90}/>
         <Sphere
           radius={0.5}
           widthSegments={20}
