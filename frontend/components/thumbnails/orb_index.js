@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, asset, Pano, Text, View, Sphere } from 'react-vr';
+import { Easing } from 'react-native';
 
 const indexStyle = {
   position: 'absolute',
@@ -30,7 +31,8 @@ class OrbThumb extends Component {
       {
         toValue: 360,
         duration: 10000,
-        delay: 1000
+        delay: 1000,
+        easing: Easing.linear
       }
     ).start();
   }
