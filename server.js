@@ -1,3 +1,6 @@
+var dotenv = require('dotenv');
+dotenv.load();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -40,7 +43,7 @@ app.use('/api/users', users);
 app.use('/api/orbs', orbs);
 app.use('/api/follows', follows);
 app.use('/api/feed', feed);
-
+console.log(process.env);
 // listens for requests
 app.listen(port, function() {
   console.log(`api running on port ${port}`);
