@@ -28,6 +28,7 @@ class OrbThumb extends Component {
   componentDidMount(){
     this.runAnimation();
   }
+
   runAnimation() {
     this.state.spin.setValue(0);
     Animated.timing(
@@ -68,7 +69,7 @@ class OrbThumb extends Component {
         <Sphere
           radius={1}
           widthSegments={20}
-          heightSegments={12}
+          heightSegments={24}
           texture={"/static_assets/backyard.jpg"}
         />
     </Animated.View>
