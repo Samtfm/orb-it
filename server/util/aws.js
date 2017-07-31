@@ -1,24 +1,24 @@
 const aws = require('aws-sdk');
-//change later
-const config = require('../config/s3');
 
-const AWS_ACCESS_KEY = config.accessKey;
-const AWS_SECRET_KEY = config.secretKey;
-const S3_BUCKET = config.bucket;
 
-// const AWS_ACCESS_KEY = ENV['AWS_ACCESS_KEY'];
-// const AWS_SECRET_KEY = ENV['AWS_SECRET_KEY'];
-// const S3_BUCKET = ENV['S3_BUCKET'];
+const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY_ID;
+const AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
+const S3_BUCKET = process.env.S3_BUCKET;
+const S3_REGION = process.env.S3_REGION;
 
 function S3Creds(fileName) {
-  aws.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
+  aws.config.update({
+    accessKeyId: AWS_ACCESS_KEY,
+    secretAccessKey: AWS_SECRET_KEY,
+    bucket: S3_BUCKET,
+    region: S3_REGION
+  });
 
   const s3 = new aws.S3();
   const options = {
     Bucket: S3_BUCKET,
     Key: fileName,
     Expires: 60,
-    ContentType: 'image/png',
     ACL: 'public-read'
   };
 

@@ -12,7 +12,6 @@ module.exports = {
       .then(orb => {
         console.log('creating credentials')
         const fullName = `orb_${orb.id}_full.png`;
-        console.log(S3Creds(fullName))
         const thumbName = `orb_${orb.id}_thumb.png`;
         return {
           orb,
