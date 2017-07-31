@@ -156,6 +156,7 @@
         }
         img.src = event.target.result;
       }
+      console.log(e.target.files[0])
       reader.readAsDataURL(e.target.files[0])
     }
 
@@ -175,11 +176,6 @@
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        postImageToS3(formData.thumbImage, data.thumbCredentials)
-        .then(res => {
-          console.log(res)
-        })
-        .catch(err => console.log(err))
       })
     }
 

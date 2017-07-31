@@ -1,6 +1,5 @@
 const Orb = require('../models').Orb;
-const s3Credentials = require('../util/s3_credentials');
-const s3Config = require('../config/s3')
+const S3Creds = require('../util/aws');
 
 module.exports = {
   create(req, res) {
@@ -13,11 +12,12 @@ module.exports = {
       .then(orb => {
         console.log('creating credentials')
         const fullName = `orb_${orb.id}_full.png`;
+        console.log(S3Creds(fullName))
         const thumbName = `orb_${orb.id}_thumb.png`;
         return {
           orb,
-          fullCredentials: s3Credentials(s3Config, fullName),
-          thumbCredentials: s3Credentials(s3Config, thumbName),
+          fullCredentials: S3Creds(fullName),
+          thumbCredentials: S3Creds(thumbName),
         };
       })
       .then(credentials => res.status(201).send(credentials))
