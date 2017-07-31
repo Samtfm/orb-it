@@ -2,6 +2,7 @@
   <head>
     <title>OrbIt</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/86/three.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300i|Raleway:200" rel="stylesheet">
   </head>
   <style>
@@ -75,7 +76,8 @@
       camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 1000 );
       renderer = new THREE.WebGLRenderer({
         canvas: three,
-        alpha: true
+        alpha: true,
+        antialias: true
       });
 
       scene.fog = new THREE.Fog(0x000000, .01, 200)
@@ -92,16 +94,38 @@
       orb = new THREE.Mesh( geometry, material );
 
       scene.add(orb);
-      camera.position.z = 100;
+      camera.position.z = 10;
+
+      //create animation clips
+      var pos = {y: -20, z: -20};
+      var target = {y: 0, z: 0};
+      var enterTween = new TWEEN.Tween(pos).to(target, 2000).easing(TWEEN.Easing.Elastic.Out);
+
+      enterTween.onUpdate(() => {
+        orb.position.y = pos.y;
+        orb.position.z = pos.z;
+      })
+      enterTween.start();
 
       animate();
     }
 
+    const exit = () => {
+      var pos = {y: 0};
+      var target = {y: 50};
+      var exitTween = new TWEEN.Tween(pos).to(target, 2000).easing(TWEEN.Easing.Elastic.In);
+
+      exitTween.onUpdate(() => {
+        orb.position.y = pos.y;
+      })
+
+      exitTween.start();
+    }
+
     const animate = () => {
       requestAnimationFrame(animate);
-      if (camera.position.z !== 10) {
-        camera.position.z -= 10;
-      }
+
+      TWEEN.update();
       orb.rotation.y += .001;
       renderer.render(scene, camera);
     }
@@ -142,6 +166,8 @@
       ctx.drawImage(img, 0, 0, thumbnailCanvas.width, thumbnailCanvas.height)
       buildScene(thumbnailCanvas.toDataURL());
     };
+
+    submitButton.addEventListener('click', exit)
     //
     function submit(){
       let thumbURL, fullURL;
