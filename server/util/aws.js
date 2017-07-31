@@ -23,11 +23,11 @@ function S3Creds(fileName) {
   };
 
   const credentials = {
-    endpointUrl: `https://s3.amazonaws.com/${S3_BUCKET}/${fileName}`,
-
+    endpointUrl: `https://${S3_BUCKET}.s3-${S3_REGION}.amazonaws.com/${fileName}`,
+    signedUrl: s3.getSignedUrl('putObject', options)
   }
 
-  return s3.getSignedUrl('putObject', options);
+  return credentials;
 }
 
 module.exports = S3Creds;

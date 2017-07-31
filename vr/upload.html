@@ -174,7 +174,20 @@
       fetchCredsForNewOrb()
       .then(res => res.json())
       .then(data => {
-        postImageToS3(formData.thumbImage, data.thumbCredentials)
+        console.log(data)
+        postImageToS3(formData.thumbImage, data.thumbCredentials.signedUrl)
+        .then(() => postImageToS3(formData.fullImage, data.fullCredentials.signedUrl))
+        .then(() => fetch(`/api/orbs/${data.orb.id}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            orb: {
+              content: {
+                fullUrl: data.fullCredentials.endpointUrl,
+                thumbUrl: data.thumbCredentials.endpointUrl
+              }
+            }
+          })
+        }))
       })
       .catch(err => console.log(err))
     }
