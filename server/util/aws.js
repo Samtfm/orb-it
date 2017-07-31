@@ -27,11 +27,7 @@ function S3Creds(fileName) {
 
   }
 
-  return s3.getSignedUrl('putObject', options, function(err, data) {
-    if (err) return err
-
-    credentials.signed
-  });
+  return s3.getSignedUrl('putObject', options);
 }
 
 module.exports = S3Creds;
