@@ -26,17 +26,20 @@ class OrbThumb extends Component {
   }
 
   componentDidMount(){
+    this.runAnimation();
+  }
+  runAnimation() {
+    this.state.spin.setValue(0);
     Animated.timing(
       this.state.spin,
       {
         toValue: 360,
-        duration: 10000,
-        delay: 1000,
+        duration: 100000,
+        delay: 0,
         easing: Easing.linear
       }
-    ).start();
+    ).start(() => this.runAnimation());
   }
-
   // componentWillReceiveProps(nextProps){
   //   this.setState({
   //     distance: nextProps.distance,
