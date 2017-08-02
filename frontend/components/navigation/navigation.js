@@ -2,15 +2,23 @@ import React, { Component } from 'react';
 import { asset, Text, View, VrButton, VrHeadModel, StyleSheet} from 'react-vr';
 
 const styles = StyleSheet.create({
-  text: {
+  prev: {
     position: 'relative',
     fontSize: 0.8,
     fontWeight: '400',
-    layoutOrigin: [0.5, 0.5],
+    layoutOrigin: [0.5, 2],
     paddingLeft: 0.2,
     paddingRight: 0.2,
     textAlign: 'center',
-    textAlignVertical: 'center',
+  },
+  next: {
+    position: 'relative',
+    fontSize: 0.8,
+    fontWeight: '400',
+    layoutOrigin: [0.5, 0],
+    paddingLeft: 0.2,
+    paddingRight: 0.2,
+    textAlign: 'center',
   }
 });
 
@@ -18,8 +26,8 @@ export default class Navigation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: 'syrup',
-      bg: 'red',
+      message: 'previous page',
+      bg: 'rgba(0,255,0,0.5)',
       fov: 90,
       rotation: 0,
       headMatrix: VrHeadModel.viewMatrix,
@@ -58,7 +66,7 @@ export default class Navigation extends React.Component {
     return (
       <View>
         <Text
-          style={[tethered, styles.text, {backgroundColor: this.state.bg}]}
+          style={[tethered, styles.prev, {backgroundColor: this.state.bg}]}
           onEnter={() => this.setState({bg: 'rgba(0,0,255,0.5)'})}
           onExit={() => this.setState({bg: 'rgba(0,255,0,0.5)'})}>
           {this.state.message}
@@ -66,7 +74,7 @@ export default class Navigation extends React.Component {
         <VrButton
           onClick={() => this.changeMessage()}>
           <Text
-            style={[tethered, styles.text, {backgroundColor: 'rgba(80,10,10,.3)'}]}>
+            style={[tethered, styles.next, {backgroundColor: 'rgba(80,10,10,.3)'}]}>
             Change Message
           </Text>
         </VrButton>
