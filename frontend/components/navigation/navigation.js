@@ -20,10 +20,26 @@ export default class Navigation extends React.Component {
     this.state = {
       message: 'syrup',
       bg: 'red',
-      fov: 45,
+      fov: 90,
       rotation: 0,
+      headMatrix: VrHeadModel.viewMatrix,
     };
     this.changeMessage = this.changeMessage.bind(this);
+
+    setInterval(() => {
+      const lookRotation = VrHeadModel.yawPitchRoll()[1];
+      const currentRotation = this.state.rotation;
+      const halfFOV = this.state.fov * 0.5;
+      if (lookRotation - currentRotation > halfFOV) {
+        this.setState({
+          rotation: lookRotation - halfFOV
+        });
+      } else if (lookRotation - currentRotation < - halfFOV) {
+        this.setState({
+          rotation: lookRotation + halfFOV
+        });
+      }
+    }, 25);
   }
 
   changeMessage() {
@@ -36,7 +52,7 @@ export default class Navigation extends React.Component {
   render() {
     const tethered = {
       transform: [
-        {rotateY: VrHeadModel.yawPitchRoll()[1]},
+        {rotateY: this.state.rotation},
         {translate: [0, 0, -4]}],
     };
     return (
