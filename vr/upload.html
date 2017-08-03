@@ -174,36 +174,35 @@
       fetchCredsForNewOrb()
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        postImageToS3(formData.thumbImage, data.thumbCredentials)
-        .then(res => {
-          console.log(res)
-        })
-        .catch(err => console.log(err))
+        console.log(data)
+        postImageToS3(formData.thumbImage, data.thumbCredentials.signedUrl)
+        .then(() => postImageToS3(formData.fullImage, data.fullCredentials.signedUrl))
+        .then(() => fetch(`/api/orbs/${data.orb.id}`, {
+          headers: { "Content-Type" : "application/json" },
+          method: "PATCH",
+          body: JSON.stringify({
+            orb: {
+              content: {
+                fullUrl: data.fullCredentials.endpointUrl,
+                thumbUrl: data.thumbCredentials.endpointUrl
+              }
+            }
+          })
+        }))
       })
+      .catch(err => console.log(err))
     }
 
     function postImageToS3(image, credentials){
-      params = credentials.params
-      params.processData = false;
-      params.contentType = 'binary/octet-stream'
-      params.file = image;
-      return fetch(credentials.endpointURL, {
-        method: "POST",
+      return fetch(credentials, {
+        method: "PUT",
         dataType: "json",
         headers: {
-        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'x-amz-acl': 'public-read'
         },
-        body: jsonToQueryString(params)//JSON.stringify(params)
+        body: image
       });
 
-    }
-    function jsonToQueryString(json) {
-      return Object.keys(json).map(function(key) {
-        return encodeURIComponent(key) + '=' +
-          encodeURIComponent(json[key]);
-      }).join('&');
     }
 
     function fetchCredsForNewOrb(){
