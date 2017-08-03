@@ -1,0 +1,224 @@
+<html>
+  <head>
+    <title>OrbIt</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/86/three.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300i|Raleway:200" rel="stylesheet">
+  </head>
+  <style>
+    html, body, h1, form, input, button, canvas {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      background: radial-gradient(#161616, black);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      color: white;
+      font-family: 'Open Sans Condensed', sans-serif;
+    }
+
+    h1 {
+      font-family: 'Raleway', sans-serif;
+    }
+
+    header {
+      width: 75%;
+      margin: '0 auto';
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #file-drop {
+      background-color: red;
+      width: 200px;
+      height: 200px;
+    }
+
+    #three {
+      max-width: 400px;
+      max-height: 400px;
+    }
+
+    .resize {
+      display: none;
+    }
+
+  </style>
+  <body>
+    <header>
+      <h1>Took a rad photosphere and you're ready to Orb It?</h1>
+    </header>
+    <section>
+      <input id="fileInput" type="file" />
+      <input id='titleInput' type="text" name="title" value="">
+      <button id='submitButton' name="Upload Orb">Orb It!</button>
+    </section>
+    <canvas id="three" width="400" height="400"></canvas>
+    <canvas class="resize" id="thumbnail" width="512" height="256"></canvas>
+    <canvas class="resize" id="resized" width="4096" height="2048"></canvas>
+
+  </body>
+  <script type="text/javascript">
+    const three = document.querySelector("#three");
+    let scene, camera, renderer, geometry, textureLoader, texture, material, orb
+
+    const buildScene = (image) => {
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 1000 );
+      renderer = new THREE.WebGLRenderer({
+        canvas: three,
+        alpha: true,
+        antialias: true
+      });
+
+      scene.fog = new THREE.Fog(0x000000, .01, 200)
+
+      scene.add(new THREE.AmbientLight(0x404040));
+      let directionalLight = new THREE.DirectionalLight(0xffffff);
+      directionalLight.position.set(10, 10, 10);
+      scene.add(directionalLight)
+
+      geometry = new THREE.SphereGeometry(3, 32, 32);
+      textureLoader = new THREE.TextureLoader();
+      texture = textureLoader.load(image)
+      material = new THREE.MeshPhongMaterial({map: texture})
+      orb = new THREE.Mesh( geometry, material );
+
+      scene.add(orb);
+      camera.position.z = 10;
+
+      //create animation clips
+      var pos = {y: -20, z: -20};
+      var target = {y: 0, z: 0};
+      var enterTween = new TWEEN.Tween(pos).to(target, 2000).easing(TWEEN.Easing.Elastic.Out);
+
+      enterTween.onUpdate(() => {
+        orb.position.y = pos.y;
+        orb.position.z = pos.z;
+      })
+      enterTween.start();
+
+      animate();
+    }
+
+    const exit = () => {
+      var pos = {y: 0};
+      var target = {y: 50};
+      var exitTween = new TWEEN.Tween(pos).to(target, 2000).easing(TWEEN.Easing.Elastic.In);
+
+      exitTween.onUpdate(() => {
+        orb.position.y = pos.y;
+      })
+
+      exitTween.start();
+    }
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      TWEEN.update();
+      orb.rotation.y += .001;
+      renderer.render(scene, camera);
+    }
+
+    const thumbnailCanvas = document.querySelector("#thumbnail");
+    const resizedCanvas = document.querySelector("#resized");
+    const fileInput = document.querySelector("#fileInput");
+    const titleInput = document.querySelector("#titleInput");
+    const submitButton = document.querySelector('#submitButton')
+    submitButton.addEventListener("click", submit);
+    const formData = {};
+
+    fileInput.addEventListener("change", processFile)
+
+    function processFile(e){
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          resizeImage(img);
+          resizedCanvas.toBlob(blob => {
+            formData.fullImage = new File([blob], 'full_image.png')
+            thumbnailCanvas.toBlob(blob => {
+              formData.thumbImage = new File([blob], 'thumbnail.png')
+              console.log(formData)
+            });
+          });
+        }
+        img.src = event.target.result;
+      }
+      reader.readAsDataURL(e.target.files[0])
+    }
+
+    function resizeImage(img){
+      let ctx = resizedCanvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, resizedCanvas.width, resizedCanvas.height)
+      ctx = thumbnailCanvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, thumbnailCanvas.width, thumbnailCanvas.height)
+      buildScene(thumbnailCanvas.toDataURL());
+    };
+
+    submitButton.addEventListener('click', exit)
+    //
+    function submit(){
+      let thumbURL, fullURL;
+      fetchCredsForNewOrb()
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        postImageToS3(formData.thumbImage, data.thumbCredentials)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => console.log(err))
+      })
+    }
+
+    function postImageToS3(image, credentials){
+      params = credentials.params
+      params.processData = false;
+      params.contentType = 'binary/octet-stream'
+      params.file = image;
+      return fetch(credentials.endpointURL, {
+        method: "POST",
+        dataType: "json",
+        headers: {
+        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        },
+        body: jsonToQueryString(params)//JSON.stringify(params)
+      });
+
+    }
+    function jsonToQueryString(json) {
+      return Object.keys(json).map(function(key) {
+        return encodeURIComponent(key) + '=' +
+          encodeURIComponent(json[key]);
+      }).join('&');
+    }
+
+    function fetchCredsForNewOrb(){
+      const body = {
+        orb: {
+          title: titleInput.value,
+          content: {},
+        }
+      }
+      return fetch("/api/orbs", {
+        headers: { "Content-Type" : "application/json" },
+        method: "POST",
+        body: JSON.stringify(body)
+      });
+    }
+
+  </script>
+</html>
