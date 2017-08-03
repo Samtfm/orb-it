@@ -9,31 +9,17 @@ import {
   VrButton,
 } from 'react-vr';
 
-import UploadImage from './frontend/components/upload_image';
+
+import OrbIndex from './frontend/components/thumbnails/orb_index';
+import Navigation from './frontend/components/navigation/navigation';
 
 export default class OrbIt extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      message: 'syrup',
-      bg: 'red'
-    };
-    this.changeMessage = this.changeMessage.bind(this);
-  }
-
-  changeMessage() {
-    //when we push to production we'll make the axios to '/api/hello' etc
-    axios.get('http://localhost/3001/api/hello')
-      .then(res => {
-        this.setState({message: res.data.message})
-      });
-  }
-
   render() {
     return (
       <View>
+        <OrbIndex/>
+        <Navigation/>
         <Pano source={asset('chess-world.jpg')}/>
-        <UploadImage/>
         <Text
           style={{
             backgroundColor: this.state.bg,
@@ -70,6 +56,6 @@ export default class OrbIt extends React.Component {
       </View>
     );
   }
-};
+}
 
 AppRegistry.registerComponent('OrbIt', () => OrbIt);
