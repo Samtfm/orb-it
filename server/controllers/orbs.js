@@ -3,14 +3,12 @@ const S3Creds = require('../util/aws');
 
 module.exports = {
   create(req, res) {
-    console.log(req.body  );
     return Orb
       .create({
         title: req.body.orb.title,
         content: req.body.orb.content,
       })
       .then(orb => {
-        console.log('creating credentials')
         const fullName = `orb_${orb.id}_full.png`;
         const thumbName = `orb_${orb.id}_thumb.png`;
         return {

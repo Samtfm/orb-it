@@ -178,6 +178,7 @@
         postImageToS3(formData.thumbImage, data.thumbCredentials.signedUrl)
         .then(() => postImageToS3(formData.fullImage, data.fullCredentials.signedUrl))
         .then(() => fetch(`/api/orbs/${data.orb.id}`, {
+          headers: { "Content-Type" : "application/json" },
           method: "PATCH",
           body: JSON.stringify({
             orb: {
