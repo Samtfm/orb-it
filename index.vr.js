@@ -1,28 +1,25 @@
 import React from 'react';
-import axios from 'axios';
+import configureStore from './frontend/store/store';
+import { Provider } from 'react-redux';
 import {
-  AppRegistry,
-  asset,
-  Pano,
-  Text,
-  View,
-  VrButton,
+  AppRegistry
 } from 'react-vr';
 
+import Orbit from './frontend/orb_it';
 
-import OrbIndex from './frontend/components/thumbnails/orb_index';
-import Navigation from './frontend/components/navigation/navigation';
+export default class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.store = configureStore();
+  }
 
-export default class OrbIt extends React.Component {
   render() {
     return (
-      <View>
-        <OrbIndex/>
-        <Navigation/>
-        <Pano source={asset('chess-world.jpg')}/>
-      </View>
+      <Provider store={this.store}>
+        <Orbit />
+      </Provider>
     );
   }
 }
 
-AppRegistry.registerComponent('OrbIt', () => OrbIt);
+AppRegistry.registerComponent('OrbIt', () => App);

@@ -22,7 +22,13 @@ module.exports = {
   },
   index(req, res) {
     return Orb
-      .all()
+      .findAll({ limit: 20, offset: req.params.offset })
+      .then(data => {
+        let orbs = {};
+
+        Object.values(data).forEach(val => orbs[val.id] = val)
+        return orbs
+      })
       .then(orbs => res.status(201).send(orbs))
       .catch(error => res.status(400).send(error));
   },
