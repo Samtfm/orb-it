@@ -1,41 +1,26 @@
 import React from 'react';
-import axios from 'axios';
-import {
-  AppRegistry,
-  asset,
-  Pano,
-  Text,
-  View,
-  VrButton,
-} from 'react-vr';
-import { Route, Redirect, MemoryRouter as Router } from 'react-router';
-import NavButton from './frontend/components/navigation/nav_button';
+import configureStore from './frontend/store/store';
+import { Provider } from 'react-redux';
+import { AppRegistry } from 'react-vr';
+import { MemoryRouter as Router } from 'react-router';
 
-// import { HashRouter } from 'react-router-dom';
+import Orbit from './frontend/orb_it';
 
-
-import OrbIndex from './frontend/components/thumbnails/orb_index';
-import Navigation from './frontend/components/navigation/navigation';
-// <route component=OrbView path='/orbs/orb-id' props='orb-id'></route>
-
-export default class OrbIt extends React.Component {
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.store = configureStore();
+  }
 
   render() {
-    console.log(Route);
     return (
-      <Router>
-        <View>
-          <Route path='/' exact={true} render={() => (
-            <Redirect to={`/fish/{6}`} />
-          )} />
-        <Route path='/orbs' component={OrbIndex} />
-
-          <Navigation/>
-          <Pano source={asset('chess-world.jpg')}/>
-    </View>
-  </Router>
+      <Provider store={this.store}>
+        <Router>
+          <Orbit />
+        </Router>
+      </Provider>
     );
   }
 }
 
-AppRegistry.registerComponent('OrbIt', () => OrbIt);
+AppRegistry.registerComponent('OrbIt', () => App);
