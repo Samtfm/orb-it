@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { asset, Text, View, VrButton, VrHeadModel, StyleSheet} from 'react-vr';
 
+
 const styles = StyleSheet.create({
   prev: {
     position: 'relative',
@@ -77,7 +78,7 @@ export default class Navigation extends React.Component {
             style={[tethered, styles.next, {backgroundColor: 'rgba(80,10,10,.3)'}]}>
             Change Message
           </Text>
-        </VrButton>
+        </VrButton
       </View>
     );
   }

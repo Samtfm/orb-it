@@ -8,7 +8,9 @@ import {
   View,
   VrButton,
 } from 'react-vr';
-import { Match, Redirect, MemoryRouter as Router } from 'react-router';
+import { Route, Redirect, MemoryRouter as Router } from 'react-router';
+import NavButton from './frontend/components/navigation/nav_button';
+
 // import { HashRouter } from 'react-router-dom';
 
 
@@ -19,14 +21,14 @@ import Navigation from './frontend/components/navigation/navigation';
 export default class OrbIt extends React.Component {
 
   render() {
-    console.log(Match);
+    console.log(Route);
     return (
       <Router>
         <View>
-          <Match pattern='/' exact={true} render={() => (
-            <Redirect to={`/orbs/{6}`} />
+          <Route path='/' exact={true} render={() => (
+            <Redirect to={`/fish/{6}`} />
           )} />
-        <Match pattern='/orbs' component={OrbIndex} />
+        <Route path='/orbs' component={OrbIndex} />
 
           <Navigation/>
           <Pano source={asset('chess-world.jpg')}/>
