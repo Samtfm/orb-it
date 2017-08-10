@@ -45,7 +45,7 @@ class OrbThumb extends Component {
           heightSegments={24}
           texture={"/static_assets/backyard.jpg"}
         />
-    </Animated.View>
+      </Animated.View>
     );
   }
 }
