@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { asset, Text, View, VrButton, VrHeadModel, StyleSheet} from 'react-vr';
-
-
+import NavButton from './nav_button';
+// const NavButton = (props) => (<VrButton>{props.children}</VrButton>);
 const styles = StyleSheet.create({
   prev: {
     position: 'relative',
@@ -78,7 +78,21 @@ export default class Navigation extends React.Component {
             style={[tethered, styles.next, {backgroundColor: 'rgba(80,10,10,.3)'}]}>
             Change Message
           </Text>
-        </VrButton
+        </VrButton>
+        <NavButton
+          to='/orbs'>
+          <Text
+            style={[tethered, styles.next, {backgroundColor: 'rgba(80,10,10,.3)'}]}>
+            go to '/orbs'
+          </Text>
+        </NavButton>
+        <NavButton
+          to='/'>
+          <Text
+            style={[tethered, styles.next, {backgroundColor: 'rgba(80,10,10,.3)'}]}>
+            go to '/'
+          </Text>
+        </NavButton>
       </View>
     );
   }
