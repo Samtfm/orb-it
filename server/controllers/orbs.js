@@ -22,7 +22,7 @@ module.exports = {
   },
   index(req, res) {
     return Orb
-      .findAll({ limit: 20, offset: req.params.offset })
+      .findAll({ limit: 24, offset: req.params.offset })
       .then(data => {
         let orbs = {};
 

@@ -6,8 +6,7 @@ class OrbThumb extends Component {
   constructor(props){
     super(props);
     this.state = {
-      distance: props.distance,
-      rotationY: props.rotationY,
+      distance: 5,
       spin: new Animated.Value(1),
     };
   }
@@ -28,22 +27,24 @@ class OrbThumb extends Component {
       }
     ).start(() => this.runAnimation());
   }
-  render(){
+
+  render() {
     const tether = {
       position: 'absolute',
       transform: [
-        {rotateY: this.state.rotationY + 90 },
+        {rotateY: this.props.rotationY + 90 },
         {translate: [this.state.distance, 0, 0]},
         {rotateY: this.state.spin}
       ],
     };
+
     return (
       <Animated.View style={tether}>
         <Sphere
           radius={1}
           widthSegments={20}
           heightSegments={24}
-          texture={"/static_assets/backyard.jpg"}
+          texture={this.props.orb.content.thumbUrl ? this.props.orb.content.thumbUrl : asset('backyard.jpg')}
         />
       </Animated.View>
     );
